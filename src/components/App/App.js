@@ -12,27 +12,18 @@ const GlobalStyle = createGlobalStyle({
 });
 
 class App extends Component {
-	state = { age: '', clicked: false };
-
-	handleAgeChange = (e) => this.setState({ age: e.target.value });
-	handleClick = (e) => this.setState({ clicked: true });
-	componentDidMount() {}
+	handleClick = (e) => this.props.dispatch({ type: 'INCREMENT' });
 
 	render() {
-		const { age, clicked } = this.state;
-
+		const { value } = this.props;
 		return (
 			<ThemeProvider theme={theme}>
 				<Fragment>
 					<GlobalStyle />
-					<p className="Age">{age}</p>
-					<p className="Clicked">{clicked ? 'Clicked!' : ''}</p>
-					<Box>
-						<input name="age" value={age} onChange={this.handleAgeChange} />
-					</Box>
 
+					<Box>{value}</Box>
 					<Button onClick={this.handleClick} variant="primary">
-						Click
+						+
 					</Button>
 				</Fragment>
 			</ThemeProvider>

@@ -1,18 +1,8 @@
-// import React from 'react';
-// import ReactDOM from 'react-dom';
-
-// import App from './components/App';
-
-// ReactDOM.render(<App />, document.getElementById('root'));
-
+import React from 'react';
+import ReactDOM from 'react-dom';
 import { createStore } from 'redux';
-
-const reducer = (state = 0, action) => {
-	if (action.type === 'INCREMENT') {
-		return state + 1;
-	}
-	return state;
-};
+import App from './components/App';
+import reducer, { getValue } from './reducers';
 
 const store = createStore(reducer);
 store.subscribe(() => {
@@ -21,9 +11,14 @@ store.subscribe(() => {
 	console.log(store.getState());
 });
 
-store.dispatch({ type: 'INCREMENT' });
-store.dispatch({ type: 'INCREMENT' });
-store.dispatch({ type: 'INCREMENT' });
-store.dispatch({ type: 'INCREMENT' });
+// store.dispatch({ type: 'INCREMENT' });
 
-console.log(store);
+const render = () =>
+	ReactDOM.render(
+		<App value={getValue(store.getState())} dispatch={store.dispatch} />,
+		document.getElementById('root')
+	);
+
+store.subscribe(render);
+
+render();
