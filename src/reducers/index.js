@@ -12,7 +12,15 @@ const ui = (state = { newTodo: '', visibleTodos: [] }, action) => {
 	if (action.type === ActionTypes.ADD_TODO) {
 		return {
 			...state,
+			newTodo: '',
 			visibleTodos: [...state.visibleTodos, action.payload.id],
+		};
+	}
+
+	if (action.type === ActionTypes.REMOVE_TODO) {
+		return {
+			...state,
+			visibleTodos: state.visibleTodos.filter((x) => x !== action.payload.id),
 		};
 	}
 

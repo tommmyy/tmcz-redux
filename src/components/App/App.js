@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { ThemeProvider, createGlobalStyle } from 'styled-components';
 import { Button, Box } from 'rebass';
-import { changeNewTodo, addTodo } from '../../actions';
+import { changeNewTodo, addTodo, removeTodo } from '../../actions';
 import { getNewTodo, getVisibleTodos } from '../../reducers';
 
 import theme from './theme';
@@ -27,11 +27,13 @@ const AddTodo = ({ onChange, onSubmit, value }) => (
 	</form>
 );
 
-const ListTodos = ({ todos }) => (
+const ListTodos = ({ todos, onClickItem }) => (
 	<Box p={16}>
 		<ul>
 			{todos.map(({ id, text }) => (
-				<li key={id}>{text}</li>
+				<li key={id} onClick={(e) => onClickItem(e, id)}>
+					{text}
+				</li>
 			))}
 		</ul>
 	</Box>
@@ -49,7 +51,7 @@ class App extends Component {
 						value={getNewTodo(state)}
 						onSubmit={(_, value) => dispatch(addTodo(value))}
 					/>
-					<ListTodos todos={getVisibleTodos(state)} />
+					<ListTodos todos={getVisibleTodos(state)} onClickItem={(_, id) => dispatch(removeTodo(id))} />
 				</Fragment>
 			</ThemeProvider>
 		);
