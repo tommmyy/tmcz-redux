@@ -7,6 +7,7 @@
     "key-mirror": "^1.0.1",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
+    "react-redux": "^6.0.0",
     "react-scripts": "1.1.5",
     "rebass": "^3.0.0-12",
     "redux": "^4.0.1",

@@ -11,9 +11,5 @@ store.subscribe(() => {
 	console.log(store.getState());
 });
 
-const render = () =>
-	ReactDOM.render(<App state={store.getState()} dispatch={store.dispatch} />, document.getElementById('root'));
+ReactDOM.render(<App store={store} />, document.getElementById('root'));
 
-store.subscribe(render);
-
-render();
