@@ -1,9 +1,9 @@
 import React, { Component, Fragment } from 'react';
 import { Provider as ReduxProvider, connect } from 'react-redux';
 import { ThemeProvider, createGlobalStyle } from 'styled-components';
-import { Button, Box } from 'rebass';
-import { changeNewTodo, addTodo, removeTodo } from '../../actions';
-import { getNewTodo, getVisibleTodos } from '../../reducers';
+import { Button, Flex, Box } from 'rebass';
+import { fetchCat } from '../../actions';
+import { getCats } from '../../reducers';
 
 import theme from './theme';
 
@@ -15,47 +15,30 @@ const GlobalStyle = createGlobalStyle({
 	input: { padding: '8px' },
 });
 
-const AddTodo = ({ onChange, onSubmit, value }) => (
-	<form
-		onSubmit={(e) => {
-			e.preventDefault();
+const Cats = ({ fetchCat, cats }) => (
+	<Flex flexDirection="column" width={1 / 2}>
+		<Box>
+			<Button type="button" onClick={() => fetchCat()}>
+				+ 🐱
+			</Button>
+		</Box>
 
-			onSubmit(e, value);
-		}}
-	>
-		<input value={value} onChange={onChange} />
-		<Button type="submit">+</Button>
-	</form>
+		{cats.map(({ id, url }) => (
+			<Box key={id}>
+				<img src={url} />
+			</Box>
+		))}
+	</Flex>
 );
 
-const AddTodoContainer = connect(
+const CatsContainer = connect(
 	(state) => ({
-		value: getNewTodo(state),
+		cats: getCats(state),
 	}),
 	{
-		onSubmit: (_, value) => addTodo(value),
-		onChange: (e) => changeNewTodo(e.target.value),
+		fetchCat,
 	}
-)(AddTodo);
-
-const ListTodos = ({ todos, onClickItem }) => (
-	<Box p={16}>
-		<ul>
-			{todos.map(({ id, text }) => (
-				<li key={id} onClick={(e) => onClickItem(id)}>
-					{text}
-				</li>
-			))}
-		</ul>
-	</Box>
-);
-
-const ListTodosContainer = connect(
-	(state) => ({
-		todos: getVisibleTodos(state),
-	}),
-	(dispatch) => ({ onClickItem: (id) => dispatch(removeTodo(id)) })
-)(ListTodos);
+)(Cats);
 
 class App extends Component {
 	render() {
@@ -65,8 +48,7 @@ class App extends Component {
 				<ThemeProvider theme={theme}>
 					<Fragment>
 						<GlobalStyle />
-						<AddTodoContainer />
-						<ListTodosContainer />
+						<CatsContainer />
 					</Fragment>
 				</ThemeProvider>
 			</ReduxProvider>

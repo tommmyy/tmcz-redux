@@ -1,4 +1,6 @@
 import { createStore, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
+
 import reducer from '../reducers';
 
 // stolen from https://redux.js.org/advanced/middleware
@@ -10,7 +12,7 @@ const logger = (store) => (next) => (action) => {
 };
 
 export default (initialState) => {
-	const store = createStore(reducer, initialState, applyMiddleware(logger));
+	const store = createStore(reducer, initialState, applyMiddleware(logger, thunk));
 
 	return store;
 };

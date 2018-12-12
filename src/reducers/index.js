@@ -1,38 +1,23 @@
 import { combineReducers } from 'redux';
 import ActionTypes from '../constants/ActionTypes';
 
-const ui = (state = { newTodo: '', visibleTodos: [] }, action) => {
-	if (action.type === ActionTypes.CHANGE_NEW_TODO) {
+const ui = (state = { newTodo: '', visibleCats: [] }, action) => {
+	if (action.type === ActionTypes.FETCH_CAT_SUCCESS) {
 		return {
 			...state,
-			newTodo: action.payload.text,
-		};
-	}
-
-	if (action.type === ActionTypes.ADD_TODO) {
-		return {
-			...state,
-			newTodo: '',
-			visibleTodos: [...state.visibleTodos, action.payload.id],
-		};
-	}
-
-	if (action.type === ActionTypes.REMOVE_TODO) {
-		return {
-			...state,
-			visibleTodos: state.visibleTodos.filter((x) => x !== action.payload.id),
+			visibleCats: [...state.visibleCats, action.payload.id],
 		};
 	}
 
 	return state;
 };
 
-const entities = (state = { todos: {} }, action) => {
-	if (action.type === ActionTypes.ADD_TODO) {
+const entities = (state = { cats: {} }, action) => {
+	if (action.type === ActionTypes.FETCH_CAT_SUCCESS) {
 		return {
 			...state,
-			todos: {
-				...state.todos,
+			cats: {
+				...state.cats,
 				[action.payload.id]: action.payload,
 			},
 		};
@@ -43,11 +28,9 @@ const entities = (state = { todos: {} }, action) => {
 
 export default combineReducers({ ui, entities });
 
-export const getVisibleTodos = (state) => {
-	const todos = state.entities.todos;
-	const ids = state.ui.visibleTodos;
+export const getCats = (state) => {
+	const cats = state.entities.cats;
+	const ids = state.ui.visibleCats;
 
-	return ids.map((id) => todos[id]);
+	return ids.map((id) => cats[id]);
 };
-
-export const getNewTodo = (state) => state.ui.newTodo;
