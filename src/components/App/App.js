@@ -1,7 +1,9 @@
 import React, { Component, Fragment } from 'react';
 import { ThemeProvider, createGlobalStyle } from 'styled-components';
 import { Button, Box } from 'rebass';
-import { increment, decrement, reset } from '../../actions';
+import { changeNewTodo, addTodo } from '../../actions';
+import { getNewTodo, getVisibleTodos } from '../../reducers';
+
 import theme from './theme';
 
 const GlobalStyle = createGlobalStyle({
@@ -12,24 +14,42 @@ const GlobalStyle = createGlobalStyle({
 	input: { padding: '8px' },
 });
 
+const AddTodo = ({ onChange, onSubmit, value }) => (
+	<form
+		onSubmit={(e) => {
+			e.preventDefault();
+
+			onSubmit(e, value);
+		}}
+	>
+		<input value={value} onChange={onChange} />
+		<Button type="submit">+</Button>
+	</form>
+);
+
+const ListTodos = ({ todos }) => (
+	<Box p={16}>
+		<ul>
+			{todos.map(({ id, text }) => (
+				<li key={id}>{text}</li>
+			))}
+		</ul>
+	</Box>
+);
+
 class App extends Component {
 	render() {
-		const { value, dispatch } = this.props;
+		const { state, dispatch } = this.props;
 		return (
 			<ThemeProvider theme={theme}>
 				<Fragment>
 					<GlobalStyle />
-
-					<Box>{value}</Box>
-					<Button onClick={() => dispatch(increment())} variant="primary">
-						+
-					</Button>
-					<Button onClick={() => dispatch(decrement())} variant="primary">
-						-
-					</Button>
-					<Button onClick={() => dispatch(reset())} variant="primary">
-						0
-					</Button>
+					<AddTodo
+						onChange={(e) => dispatch(changeNewTodo(e.target.value))}
+						value={getNewTodo(state)}
+						onSubmit={(_, value) => dispatch(addTodo(value))}
+					/>
+					<ListTodos todos={getVisibleTodos(state)} />
 				</Fragment>
 			</ThemeProvider>
 		);

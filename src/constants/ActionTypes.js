@@ -1,3 +1,3 @@
 import keyMirror from 'key-mirror';
 
-export default keyMirror({ INCREMENT: null, DECREMENT: null, RESET: null });
+export default keyMirror({ ADD_TODO: null, CHANGE_NEW_TODO: null });

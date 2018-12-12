@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { createStore } from 'redux';
 import App from './components/App';
-import reducer, { getValue } from './reducers';
+import reducer from './reducers';
 
 const store = createStore(reducer);
 store.subscribe(() => {
@@ -11,13 +11,8 @@ store.subscribe(() => {
 	console.log(store.getState());
 });
 
-// store.dispatch({ type: 'INCREMENT' });
-
 const render = () =>
-	ReactDOM.render(
-		<App value={getValue(store.getState())} dispatch={store.dispatch} />,
-		document.getElementById('root')
-	);
+	ReactDOM.render(<App state={store.getState()} dispatch={store.dispatch} />, document.getElementById('root'));
 
 store.subscribe(render);
 
