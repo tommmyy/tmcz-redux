@@ -1,15 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { createStore } from 'redux';
 import App from './components/App';
-import reducer from './reducers';
+import configureStore from './store/configureStore';
 
-const store = createStore(reducer);
-store.subscribe(() => {
-	console.log('New state');
-
-	console.log(store.getState());
-});
+const store = configureStore();
 
 ReactDOM.render(<App store={store} />, document.getElementById('root'));
-
